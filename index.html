@@ -123,10 +123,30 @@
   .reveal .who { font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
   .reveal .story { font-family: var(--font-display); font-size: clamp(1.4rem, 3.4vw, 1.75rem); line-height: 1.3; }
   .reveal .story.fresh { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+  .reveal .stat { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; font-size: .95rem; }
+  .reveal .count { font-weight: 600; }
+  .reveal .count span { color: var(--accent); }
+  .reveal .method { color: var(--ink-soft); }
+  .reveal .method b { color: var(--ink); font-weight: 600; }
+  .dots button.same { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--accent); }
   .tally { font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
   .tally strong { color: var(--ink); font-weight: 600; }
 
   /* How I work */
+  .qual { display: flex; flex-direction: column; gap: 16px; margin-bottom: 44px; padding: clamp(22px, 4vw, 30px); border-radius: 22px; background: var(--surface); border: 1px solid var(--line); }
+  .qual h3 { font-size: 1.5rem; }
+  .methods { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .methods li { border-radius: 999px; padding: 6px 14px; font-size: .9rem; font-weight: 500; }
+
+  /* What I bring */
+  .bring { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .bring > div { border-radius: 22px; padding: clamp(22px, 3.5vw, 30px); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .bring p { font-size: .97rem; }
+  .bring .vis { height: 44px; display: flex; align-items: center; gap: 6px; }
+  .pestle span { width: 30px; height: 30px; border-radius: 8px; background: var(--surface); display: grid; place-items: center; font-family: var(--font-display); font-weight: 500; font-size: .95rem; }
+  .ai span { height: 8px; border-radius: 4px; background: var(--ink); opacity: .7; }
+  .eye svg { width: 64px; height: 40px; fill: none; stroke: var(--ink); stroke-width: 1.4; }
+  .eye .spark { fill: var(--ink); stroke: none; }
   .principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 56px; }
   .principles div { display: flex; flex-direction: column; gap: 12px; }
   .principles .chip { width: 36px; height: 6px; border-radius: 3px; }
@@ -154,7 +174,7 @@
   .span6 { grid-column: span 6; }
   .t-blue { background: var(--p-blue); } .t-sage { background: var(--p-sage); } .t-butter { background: var(--p-butter); } .t-peach { background: var(--p-peach); } .t-plain { background: var(--surface); border: 1px solid var(--line); }
 
-  .venn { position: relative; height: 150px; max-width: 260px; width: 100%; }
+  .venn { position: relative; height: 150px; max-width: 260px; width: 100%; margin: 0 auto; }
   .venn span { position: absolute; top: 0; width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; text-align: center; font-size: .82rem; font-weight: 600; line-height: 1.3; padding: 18px; box-sizing: border-box; }
   .venn .br { left: 0; background: rgba(120, 180, 120, .35); padding-right: 52px; }
   .venn .it { right: 0; background: rgba(110, 150, 210, .35); padding-left: 52px; }
@@ -210,16 +230,19 @@
   /* Tablet */
   @media (max-width: 900px) {
     .principles { gap: 36px 36px; }
+    .bring { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .bring > div:last-child { grid-column: span 2; }
   }
   /* Phone */
   @media (max-width: 700px) {
     body { font-size: 1rem; }
-    .crowd-body, .principles { grid-template-columns: minmax(0, 1fr); }
+    .crowd-body, .principles, .bring { grid-template-columns: minmax(0, 1fr); }
+    .bring > div:last-child { grid-column: auto; }
     .principles { gap: 32px; }
     .span3 { grid-column: span 6; }
     .info { gap: 14px; }
     .dots { max-width: 320px; margin: 0 auto; }
-    .reveal { min-height: 10em; text-align: center; align-items: center; }
+    .reveal { min-height: 10em; }
     .study { grid-template-columns: minmax(0, 1fr); margin-top: 36px; }
     .head { margin-bottom: 24px; }
     .hero nav { gap: 8px; letter-spacing: .04em; }
@@ -237,7 +260,6 @@
     .ways { flex-direction: column; align-items: stretch; }
     .email { border-radius: 18px; padding: 16px; flex-direction: column; align-items: stretch; text-align: center; }
     .ways .btn { text-align: center; }
-    .venn { margin: 0 auto; }
     .clouds svg { width: 28px; height: 20px; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -271,7 +293,7 @@
       </aside>
     </div>
     <nav class="load d4" aria-label="Sections">
-      <a href="#crowd">Meet the crowd</a><a href="#work">How I work</a><a href="#path">Experience</a><a href="#off">Off the clock</a><a href="#contact">Get in touch</a>
+      <a href="#crowd">Meet the crowd</a><a href="#work">How I work</a><a href="#bring">What I bring</a><a href="#path">Experience</a><a href="#off">Off the clock</a><a href="#contact">Get in touch</a>
     </nav>
   </header>
 
@@ -285,13 +307,17 @@
     <div class="head">
       <p class="eyebrow">Every chart is a crowd</p>
       <h2 id="crowd-title">Here are 100 users. <em>Pick one.</em></h2>
-      <p class="soft">Dashboards are great at turning people into percentages. I like turning them back into people. Tap any dot to meet someone.</p>
+      <p class="soft">Dashboards are great at turning people into percentages. I like turning them back into people. Each dot is one person. Tap one to see what they did, how many people in this crowd did the same thing, and the research method I'd use to find out why.</p>
     </div>
     <div class="crowd-body">
       <div class="dots" id="dots" role="group" aria-label="One hundred research participants"></div>
       <div class="reveal" aria-live="polite">
         <span class="who" id="who">Respondent #27</span>
         <p class="story" id="story">Told us they read the terms and conditions. They did not. We love them anyway.</p>
+        <div class="stat">
+          <span class="count" id="count"><span>14 of these 100 people</span> did this.</span>
+          <span class="method" id="method"><b>How I'd explore it: usability testing.</b> Watching what people actually do, rather than what they tell us they do.</span>
+        </div>
         <span class="tally" id="tally">You've met <strong>1</strong> of 20 different people. Keep going.</span>
       </div>
     </div>
@@ -301,6 +327,19 @@
     <div class="head">
       <p class="eyebrow">How I work</p>
       <h2>Curious, committed, and <em>a bit of fun.</em></h2>
+    </div>
+    <div class="qual">
+      <h3>Qualitative research is <em>my strong point.</em></h3>
+      <p class="soft">Numbers tell you what is happening. Talking to people, and watching them, tells you why. These are the methods I'm best at:</p>
+      <ul class="methods">
+        <li style="background:var(--p-blue)">User interviews</li>
+        <li style="background:var(--p-sage)">Usability testing</li>
+        <li style="background:var(--p-butter)">Focus groups</li>
+        <li style="background:var(--p-lilac)">Archetypes</li>
+        <li style="background:var(--p-peach)">Ethnographic studies</li>
+        <li style="background:var(--p-blue)">Diary studies</li>
+        <li style="background:var(--p-sage)">Contextual inquiry</li>
+      </ul>
     </div>
     <div class="principles">
       <div>
@@ -322,6 +361,30 @@
         <span class="chip" style="background:var(--p-peach)"></span>
         <h3>Making it enjoyable</h3>
         <p>Interviews, playbacks, workshops: I try to make all of them fun, because people learn more when they're having a good time. I joke a lot, and I take the work very seriously. Those two things get along fine.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="bring">
+    <div class="head">
+      <p class="eyebrow">What I bring to the table</p>
+      <h2>A few things <em>up my sleeve.</em></h2>
+    </div>
+    <div class="bring">
+      <div style="background:var(--p-blue)">
+        <div class="vis ai" aria-hidden="true"><span style="width:30%"></span><span style="width:18%"></span><span style="width:40%"></span></div>
+        <h3>AI for faster, sturdier insights</h3>
+        <p>I use AI to speed up synthesis and to pressure-test what I'm finding, so teams get robust insights sooner without cutting corners on rigour.</p>
+      </div>
+      <div style="background:var(--p-sage)">
+        <div class="vis pestle" aria-hidden="true"><span>P</span><span>E</span><span>S</span><span>T</span><span>L</span><span>E</span></div>
+        <h3>Analysis that guides strategy</h3>
+        <p>Frameworks like PESTLE help me connect what users tell us to the wider political, economic, social, technological, legal and environmental picture, so research feeds straight into strategy.</p>
+      </div>
+      <div style="background:var(--p-lilac)">
+        <div class="vis eye" aria-hidden="true"><svg viewBox="0 0 64 40"><path d="M4 20c8-11 18-15 28-15s20 4 28 15c-8 11-18 15-28 15S12 31 4 20z"/><circle cx="32" cy="20" r="8"/><circle cx="32" cy="20" r="3" class="spark"/><path class="spark" d="M55 3l1.2 3.3L59.5 7.5 56.2 8.7 55 12 53.8 8.7 50.5 7.5 53.8 6.3z"/></svg></div>
+        <h3>Reading people (almost magic)</h3>
+        <p>Body language, a pause before an answer, the thing someone doesn't quite say. I notice it, and I'm good at predicting what people will do next. It's almost magic, though really it's years of paying very close attention.</p>
       </div>
     </div>
   </section>
@@ -413,7 +476,6 @@
     <div class="head">
       <p class="eyebrow">Get in touch</p>
       <h2>Let's <em>talk.</em></h2>
-      <p class="soft">If you're hiring, looking for a mentor, or need a speaker who'll keep the room awake, I'd love to hear from you.</p>
     </div>
     <div class="ways">
       <div class="email"><code id="mail">giovannacferreira@icloud.com</code><button class="btn solid" id="copy" type="button">Copy email</button></div>
@@ -426,34 +488,36 @@
 
 <script>
 (function () {
+  // text, how many of the 100 did it, method, why that method
   const stories = [
-    "Told us they read the terms and conditions. They did not. We love them anyway.",
-    "Abandoned the form at step 3. Not a UX problem: their toddler found the off switch.",
-    "Clicked 'Forgot password' four times. Remembered it on the fifth. Did not trust the feeling.",
-    "Thought APR was a month. Not wrong, just early.",
-    "Opened the banking app at 2:14am to check their balance. It was still there. Smaller.",
-    "Calls every chatbot 'mate'. Gets annoyed when it calls them 'mate' back.",
-    "Is saving for their pension 'later'. Later keeps moving.",
-    "Has strong opinions about the button's colour. Has not read the button.",
-    "Gave a 10 on the satisfaction survey so it would go away.",
-    "Pressed back. Lost everything. Has made peace with it. Has not made peace with you.",
-    "Their mum does their online banking. Their mum is 82 and better at it.",
-    "Behaved exactly like the persona predicted. Once. Never again.",
-    "Took the survey in the bath. Dropped the phone. Logged as a drop-off.",
-    "Thinks 'Are you sure?' is a personal question. Honestly, fair.",
-    "Is the 0.3% the dashboard calls an outlier. Has a whole life, a cat and a grudge.",
-    "Didn't scroll below the fold because lunch was ready. Priorities.",
-    "Screenshots every confirmation page. Has 4,000 of them. Has never needed one.",
-    "Skipped the onboarding tour, then asked where everything was.",
-    "Uses the 'contact us' form to write poetry. It's not bad.",
-    "Said 'I'd definitely use that'. Has not used that."
+    ["Told us they read the terms and conditions. They did not. We love them anyway.", 14, "usability testing", "Watching what people actually do, rather than what they tell us they do."],
+    ["Abandoned the form at step 3. Not a UX problem: their toddler found the off switch.", 6, "a diary study", "Real life happens around our products, and diaries capture it as it happens."],
+    ["Clicked 'Forgot password' four times. Remembered it on the fifth. Did not trust the feeling.", 9, "usability testing", "Seeing exactly where confidence drops and people start second-guessing themselves."],
+    ["Thought APR was a month. Not wrong, just early.", 7, "user interviews", "Finding out how people really understand the language we take for granted."],
+    ["Opened the banking app at 2:14am to check their balance. It was still there. Smaller.", 5, "a diary study", "Late-night money worries don't show up in a lab. They show up in diaries."],
+    ["Calls every chatbot 'mate'. Gets annoyed when it calls them 'mate' back.", 4, "user interviews with real chat transcripts", "Talking through real conversations shows how tone lands, for better or worse."],
+    ["Is saving for their pension 'later'. Later keeps moving.", 8, "in-depth interviews", "Getting underneath the attitudes and feelings that keep pushing big decisions back."],
+    ["Has strong opinions about the button's colour. Has not read the button.", 3, "usability testing", "Separating what people say they like from what actually helps them get things done."],
+    ["Gave a 10 on the satisfaction survey so it would go away.", 6, "follow-up interviews", "Scores tell you what. A conversation tells you whether the score means anything."],
+    ["Pressed back. Lost everything. Has made peace with it. Has not made peace with you.", 5, "usability testing", "Moments of loss and frustration are easy to spot once you watch someone try."],
+    ["Their mum does their online banking. Their mum is 82 and better at it.", 2, "an ethnographic study", "Spending time with households shows who really does what, and why."],
+    ["Behaved exactly like the persona predicted. Once. Never again.", 3, "archetypes built from behaviour", "Grouping people by what they do and need, rather than by age or income, holds up better."],
+    ["Took the survey in the bath. Dropped the phone. Logged as a drop-off.", 2, "contextual inquiry", "Knowing where and how people take part changes how you read the data."],
+    ["Thinks 'Are you sure?' is a personal question. Honestly, fair.", 3, "usability testing of the wording", "Small words carry a lot of weight, and testing them shows how they feel to read."],
+    ["Is the outlier the dashboard quietly rounds away. Has a whole life, a cat and a grudge.", 1, "an in-depth interview", "Outliers are often early signals. One good conversation can explain a lot."],
+    ["Didn't scroll below the fold because lunch was ready. Priorities.", 5, "contextual inquiry", "Observing people in their own environment shows what actually competes for their attention."],
+    ["Screenshots every confirmation page. Has 4,000 of them. Has never needed one.", 2, "an ethnographic study", "Habits like this point to trust, and trust is easiest to understand up close."],
+    ["Skipped the onboarding tour, then asked where everything was.", 6, "usability testing", "Watching first-time use shows what people need, and when they actually need it."],
+    ["Uses the 'contact us' form to write poetry. It's not bad.", 1, "a focus group", "Sometimes people just want to be heard, and a group conversation brings that out."],
+    ["Said 'I'd definitely use that'. Has not used that.", 8, "concept testing with follow-up", "Comparing what people say they'll do with what they later do keeps everyone honest."]
   ];
   const finale = "They contradicted each other, surprised you and broke at least one assumption. Welcome to research.";
   const pastels = ['--p-blue', '--p-sage', '--p-butter', '--p-lilac', '--p-peach'];
 
   let seed = 1983;
   const rand = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-  const map = Array.from({ length: 100 }, (_, i) => i % stories.length);
+  const map = [];
+  stories.forEach((st, k) => { for (let n = 0; n < st[1]; n++) map.push(k); });
   for (let i = map.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [map[i], map[j]] = [map[j], map[i]]; }
   const tcs = map.indexOf(0); [map[26], map[tcs]] = [map[tcs], map[26]];
 
@@ -461,6 +525,9 @@
   const who = document.getElementById('who');
   const story = document.getElementById('story');
   const tally = document.getElementById('tally');
+  const countEl = document.getElementById('count');
+  const methodEl = document.getElementById('method');
+  const buttons = [];
   const met = new Set([0]);
   let current = null;
 
@@ -469,7 +536,11 @@
     current = btn; btn.classList.add('current', 'met');
     const s = map[i]; met.add(s);
     who.textContent = 'Respondent #' + (i + 1);
-    story.textContent = stories[s];
+    const [text, n, method, why] = stories[s];
+    story.textContent = text;
+    countEl.innerHTML = '<span>' + (n === 1 ? 'Just 1 of these 100 people' : n + ' of these 100 people') + '</span> ' + (n === 1 ? 'did this.' : 'did this.');
+    methodEl.innerHTML = '<b>How I\'d explore it: ' + method + '.</b> ' + why;
+    buttons.forEach((bt, k) => bt.classList.toggle('same', map[k] === s && bt !== btn));
     story.classList.remove('fresh'); void story.offsetWidth; story.classList.add('fresh');
     tally.innerHTML = met.size === stories.length
       ? '<strong>You\'ve met all 20.</strong> ' + finale
@@ -483,17 +554,17 @@
     b.setAttribute('aria-label', 'Respondent ' + (i + 1));
     b.addEventListener('click', () => show(i, b));
     if (i === 26) { b.classList.add('met', 'current'); current = b; }
-    dotsEl.appendChild(b);
+    dotsEl.appendChild(b); buttons.push(b);
   }
 
   // Reveal sections as people scroll
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduce) {
-    const groups = ['.thesis > *', 'section .head', '.crowd-body', '.principles > div', '.path li', '.study', '.info .tile', '.ways', 'footer'];
+    const groups = ['.thesis > *', 'section .head', '.crowd-body', '.qual', '.principles > div', '.bring > div', '.path li', '.study', '.info .tile', '.ways', 'footer'];
     const targets = [];
     groups.forEach(sel => document.querySelectorAll(sel).forEach((el, i) => {
       el.classList.add('sr');
-      if (/principles|path|tile|thesis/.test(sel)) el.style.setProperty('--d', (i % 4) * 0.1 + 's');
+      if (/principles|bring|path|tile|thesis/.test(sel)) el.style.setProperty('--d', (i % 4) * 0.1 + 's');
       targets.push(el);
     }));
     document.documentElement.classList.add('sr-ready');
