@@ -92,7 +92,13 @@
 
   /* Hero */
   .hero { gap: 28px; }
-  .hero .lede { font-size: clamp(1.15rem, 2.6vw, 1.32rem); line-height: 1.6; max-width: 40ch; }
+  .hero .lede { font-size: clamp(1.15rem, 2.6vw, 1.32rem); line-height: 1.6; max-width: 34ch; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 56px); align-items: end; }
+  .hero-main { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .now { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 24px 26px; display: flex; flex-direction: column; gap: 14px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .now ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .now li { display: flex; gap: 12px; align-items: baseline; font-size: .98rem; line-height: 1.45; }
+  .now li i { flex: none; width: 10px; height: 10px; border-radius: 50%; transform: translateY(1px); }
   .hero nav { display: flex; flex-wrap: wrap; gap: 12px 26px; font-size: .82rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-top: 12px; }
   .hero nav a { text-decoration: none; color: var(--ink-soft); }
   .hero nav a:hover { color: var(--accent); }
@@ -101,7 +107,8 @@
 
   /* Thesis */
   .thesis { gap: 24px; }
-  .thesis blockquote { margin: 0; font-family: var(--font-display); font-weight: 350; font-size: clamp(2.2rem, 7vw, 3.8rem); line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+  .thesis p.soft { font-size: 1.12rem; max-width: 64ch; }
+  .thesis blockquote { margin: 0; font-family: var(--font-display); font-weight: 350; font-size: clamp(2.2rem, 7vw, 4.3rem); line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
 
   /* Crowd */
   .crowd { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); padding: clamp(28px, 6vw, 56px); }
@@ -216,6 +223,8 @@
     .study { grid-template-columns: minmax(0, 1fr); margin-top: 36px; }
     .head { margin-bottom: 24px; }
     .hero nav { gap: 8px; letter-spacing: .04em; }
+    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .hero .lede { max-width: 40ch; }
     .hero nav a { border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; background: var(--surface); }
     .path li { padding-block: 20px; }
     .path .org { font-size: 1.35rem; }
@@ -246,8 +255,21 @@
   <header class="hero">
     <div class="swatches load" aria-hidden="true"><span style="background:var(--p-blue)"></span><span style="background:var(--p-sage)"></span><span style="background:var(--p-butter)"></span><span style="background:var(--p-lilac)"></span><span style="background:var(--p-peach)"></span></div>
     <p class="eyebrow load">Senior Design Researcher at Lloyds Banking Group</p>
-    <h1 class="load d2">Hi, I'm <em>Gio.</em></h1>
-    <p class="lede load d3">I'm a design researcher, which is a polite way of saying I get paid to be nosy. I want to know why people do what they do, and I love helping teams see it too.</p>
+    <div class="hero-grid">
+      <div class="hero-main">
+        <h1 class="load d2">Hi, I'm <em>Gio.</em></h1>
+        <p class="lede load d3">I'm a design researcher, which is a polite way of saying I get paid to be nosy. I want to know why people do what they do, and I love helping teams see it too.</p>
+      </div>
+      <aside class="now load d4" aria-label="Right now">
+        <p class="eyebrow">Right now</p>
+        <ul>
+          <li><i style="background:var(--p-blue)"></i>Researching at Lloyds Banking Group</li>
+          <li><i style="background:var(--p-lilac)"></i>Finishing a master's at HEC Paris</li>
+          <li><i style="background:var(--p-peach)"></i>Raising a very opinionated two-year-old</li>
+          <li><i style="background:var(--p-butter)"></i>Stuck on a puzzle game, happily</li>
+        </ul>
+      </aside>
+    </div>
     <nav class="load d4" aria-label="Sections">
       <a href="#crowd">Meet the crowd</a><a href="#work">How I work</a><a href="#path">Experience</a><a href="#off">Off the clock</a><a href="#contact">Get in touch</a>
     </nav>
