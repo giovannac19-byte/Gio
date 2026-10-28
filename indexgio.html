@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Gio Ferreira, Senior Design Researcher. Curious about people, generative research, and making learning fun.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}html{scroll-behavior:smooth}</style>
+<title>Gio Ferreira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Figtree:wght@400;500;600&display=swap">
+<style>
+  /* Layout: one airy left-aligned column on a cool field with drifting pastel glows; pastels do the colour work, slate ink does the reading. */
+  :root {
+    --bg: #f5f7f8;
+    --glow-1: #d6e6f2;
+    --glow-2: #dcebdc;
+    --glow-3: #f3edcf;
+    --surface: rgba(255, 255, 255, 0.66);
+    --line: rgba(80, 96, 130, 0.16);
+    --ink: #2a3040;
+    --ink-soft: #5d6577;
+    --accent: #5866a8;
+    --p-blue: #cfe0f1;
+    --p-sage: #d4e8d3;
+    --p-butter: #f4e9bd;
+    --p-lilac: #e3dbf3;
+    --p-peach: #f7dbc9;
+    --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --font-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171d; --glow-1: #22344a; --glow-2: #23382c; --glow-3: #3a3524;
+      --surface: rgba(32, 37, 48, 0.6); --line: rgba(200, 210, 235, 0.14);
+      --ink: #eef0f5; --ink-soft: #aab1c0; --accent: #aebaf0;
+      --p-blue: #2b3d52; --p-sage: #2c4234; --p-butter: #4a4430; --p-lilac: #3a3452; --p-peach: #4e3a30;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171d; --glow-1: #22344a; --glow-2: #23382c; --glow-3: #3a3524;
+    --surface: rgba(32, 37, 48, 0.6); --line: rgba(200, 210, 235, 0.14);
+    --ink: #eef0f5; --ink-soft: #aab1c0; --accent: #aebaf0;
+    --p-blue: #2b3d52; --p-sage: #2c4234; --p-butter: #4a4430; --p-lilac: #3a3452; --p-peach: #4e3a30;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    overflow-x: hidden;
+  }
+  /* Lava lamp: soft pastel blobs that rise, sink and change shape */
+  .lava { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; filter: blur(46px); }
+  .blob { position: absolute; opacity: .9; border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; animation: morph 16s ease-in-out infinite alternate, rise var(--t) ease-in-out infinite alternate; }
+  .b1 { --t: 26s; width: 38vmax; height: 38vmax; left: -8vmax; top: 55vh; background: var(--glow-1); }
+  .b2 { --t: 32s; width: 30vmax; height: 34vmax; right: -6vmax; top: 70vh; background: var(--glow-2); animation-delay: -6s, -12s; }
+  .b3 { --t: 22s; width: 22vmax; height: 24vmax; left: 38%; top: 80vh; background: var(--glow-3); animation-delay: -3s, -4s; }
+  .b4 { --t: 36s; width: 26vmax; height: 24vmax; left: 12%; top: 90vh; background: var(--p-lilac); animation-delay: -9s, -20s; }
+  .b5 { --t: 29s; width: 20vmax; height: 22vmax; right: 18%; top: 60vh; background: var(--p-peach); opacity: .7; animation-delay: -12s, -8s; }
+  @keyframes rise { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-85vh) rotate(40deg); } }
+  @keyframes morph {
+    0%   { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
+    50%  { border-radius: 63% 37% 38% 62% / 58% 63% 37% 42%; }
+    100% { border-radius: 37% 63% 51% 49% / 37% 35% 65% 63%; }
+  }
+
+  .page { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding-block: clamp(64px, 11vw, 120px) 64px; display: flex; flex-direction: column; gap: clamp(104px, 16vw, 168px); }
+
+  a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); margin: 0; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; font-optical-sizing: auto; }
+  h1 { font-size: clamp(3.4rem, 12vw, 6.4rem); line-height: 1; letter-spacing: -.02em; font-weight: 350; }
+  h2 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; letter-spacing: -.015em; }
+  h3 { font-size: 1.4rem; line-height: 1.25; font-weight: 500; }
+  em { font-style: italic; color: var(--accent); }
+  p { margin: 0; max-width: 62ch; }
+  .soft { color: var(--ink-soft); }
+
+  section, .hero { display: flex; flex-direction: column; }
+  .head { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .head p { margin-top: 6px; }
+
+  /* Hero */
+  .hero { gap: 28px; }
+  .hero .lede { font-size: clamp(1.15rem, 2.6vw, 1.32rem); line-height: 1.6; max-width: 40ch; }
+  .hero nav { display: flex; flex-wrap: wrap; gap: 12px 26px; font-size: .82rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-top: 12px; }
+  .hero nav a { text-decoration: none; color: var(--ink-soft); }
+  .hero nav a:hover { color: var(--accent); }
+  .swatches { display: flex; gap: 8px; }
+  .swatches span { width: 14px; height: 14px; border-radius: 50%; }
+
+  /* Thesis */
+  .thesis { gap: 24px; }
+  .thesis blockquote { margin: 0; font-family: var(--font-display); font-weight: 350; font-size: clamp(2.2rem, 7vw, 3.8rem); line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+
+  /* Crowd */
+  .crowd { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); padding: clamp(28px, 6vw, 56px); }
+  .crowd .head { margin-bottom: 40px; }
+  .crowd-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 56px); align-items: center; }
+  .dots { display: grid; grid-template-columns: repeat(10, 1fr); gap: clamp(7px, 1.5vw, 11px); max-width: 320px; width: 100%; }
+  .dots button { aspect-ratio: 1; width: 100%; border: 0; padding: 0; border-radius: 50%; cursor: pointer; transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+  .dots button:hover { transform: scale(1.35); }
+  .dots button.met { background: var(--accent) !important; opacity: .85; }
+  .dots button.current { transform: scale(1.5); opacity: 1; box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent); }
+  .reveal { display: flex; flex-direction: column; gap: 16px; min-height: 12em; justify-content: center; }
+  .reveal .who { font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  .reveal .story { font-family: var(--font-display); font-size: clamp(1.4rem, 3.4vw, 1.75rem); line-height: 1.3; }
+  .reveal .story.fresh { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+  .tally { font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .tally strong { color: var(--ink); font-weight: 600; }
+
+  /* How I work */
+  .principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 64px; }
+  .principles div { display: flex; flex-direction: column; gap: 12px; }
+  .principles .chip { width: 36px; height: 6px; border-radius: 3px; }
+  .principles p { color: var(--ink-soft); }
+
+  /* Experience + study */
+  .path { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .path li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 24px; padding-block: 26px; border-top: 1px solid var(--line); }
+  .path li:last-child { border-bottom: 1px solid var(--line); }
+  .path .org { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.2; }
+  .path .role { display: block; font-family: var(--font-body); font-size: .98rem; color: var(--ink-soft); margin-top: 4px; }
+  .path .when { font-size: .74rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  .study { margin-top: 72px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px 28px; align-items: start; background: var(--p-lilac); border-radius: 22px; padding: clamp(24px, 5vw, 36px); }
+  .study .badge { width: 52px; height: 52px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; }
+  .study .badge svg { width: 26px; height: 26px; stroke: var(--ink); fill: none; stroke-width: 1.6; }
+  .study div { display: flex; flex-direction: column; gap: 6px; }
+
+  /* Off the clock infographic */
+  .info { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; }
+  .tile { border-radius: 22px; padding: clamp(24px, 4vw, 32px); display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .tile .k { font-size: .72rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+  .tile .big { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.2; }
+  .tile .note { font-size: .88rem; color: var(--ink-soft); }
+  .span3 { grid-column: span 3; }
+  .span6 { grid-column: span 6; }
+  .t-blue { background: var(--p-blue); } .t-sage { background: var(--p-sage); } .t-butter { background: var(--p-butter); } .t-peach { background: var(--p-peach); } .t-plain { background: var(--surface); border: 1px solid var(--line); }
+
+  .venn { position: relative; height: 150px; max-width: 260px; width: 100%; }
+  .venn span { position: absolute; top: 0; width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; text-align: center; font-size: .82rem; font-weight: 600; line-height: 1.3; padding: 18px; box-sizing: border-box; }
+  .venn .br { left: 0; background: rgba(120, 180, 120, .35); padding-right: 52px; }
+  .venn .it { right: 0; background: rgba(110, 150, 210, .35); padding-left: 52px; }
+  .venn .me { left: 50%; transform: translateX(-50%); width: auto; height: auto; top: 50%; margin-top: -12px; padding: 0; font-family: var(--font-display); font-style: italic; font-size: 1.05rem; font-weight: 500; }
+
+  .clouds { display: flex; flex-wrap: wrap; gap: 6px; }
+  .clouds svg { width: 34px; height: 24px; }
+  .clouds path { fill: var(--surface); stroke: var(--ink); stroke-width: 1.2; }
+  .clouds .on path { fill: var(--ink); }
+
+  .week { display: flex; height: 44px; border-radius: 12px; overflow: hidden; }
+  .week span { height: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 24px; list-style: none; margin: 0; padding: 0; font-size: .9rem; }
+  .legend li { display: flex; align-items: center; gap: 8px; }
+  .legend i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; }
+
+  .bars { display: flex; flex-direction: column; gap: 14px; }
+  .bar { display: flex; flex-direction: column; gap: 6px; font-size: .92rem; }
+  .bar .track { height: 10px; border-radius: 5px; background: var(--surface); overflow: visible; position: relative; }
+  .bar .fill { height: 100%; border-radius: 5px; background: var(--ink); opacity: .75; }
+  .bar.off .fill { width: 100%; opacity: 1; }
+  .bar.off .track::after { content: "and then some"; position: absolute; right: 0; top: 14px; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+  .bar.off { margin-bottom: 14px; }
+
+  .shows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .shows div { background: var(--surface); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+  .shows b { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; line-height: 1.25; }
+  .shows small { font-size: .78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  /* Contact */
+  .contact { gap: 0; }
+  .ways { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 8px; }
+  .email { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 8px 8px 22px; max-width: 100%; }
+  .email code { font-family: var(--font-body); font-size: 1rem; user-select: all; word-break: break-all; }
+  .btn { font: inherit; font-size: .88rem; font-weight: 600; border-radius: 999px; padding: 10px 20px; cursor: pointer; text-decoration: none; border: 1px solid var(--accent); }
+  .btn.solid { background: var(--accent); color: var(--bg); }
+  .btn.ghost { background: transparent; color: var(--accent); }
+
+  footer { font-size: .88rem; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 28px; margin-top: -40px; }
+
+  .load { animation: rise 1.1s cubic-bezier(.2,.7,.2,1) both; }
+  .load.d2 { animation-delay: .12s; } .load.d3 { animation-delay: .24s; } .load.d4 { animation-delay: .36s; }
+  @keyframes rise { from { transform: translateY(10px); opacity: .001; } to { transform: none; opacity: 1; } }
+
+  @media (max-width: 700px) {
+    .crowd-body, .principles { grid-template-columns: minmax(0, 1fr); }
+    .principles { gap: 44px; }
+    .span3 { grid-column: span 6; }
+    .dots { max-width: 300px; margin: 0 auto; }
+    .reveal { min-height: 10em; }
+    .study { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blob, .load, .reveal .story.fresh { animation: none; }
+    .dots button { transition: none; }
+  }
+</style>
+
+</head>
+<body>
+<div class="lava" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span><span class="blob b5"></span></div>
+
+<main class="page">
+
+  <header class="hero">
+    <div class="swatches load" aria-hidden="true"><span style="background:var(--p-blue)"></span><span style="background:var(--p-sage)"></span><span style="background:var(--p-butter)"></span><span style="background:var(--p-lilac)"></span><span style="background:var(--p-peach)"></span></div>
+    <p class="eyebrow load">Senior Design Researcher at Lloyds Banking Group</p>
+    <h1 class="load d2">Hi, I'm <em>Gio.</em></h1>
+    <p class="lede load d3">I'm a design researcher, which is a polite way of saying I get paid to be nosy. I want to know why people do what they do, and I love helping teams see it too.</p>
+    <nav class="load d4" aria-label="Sections">
+      <a href="#crowd">Meet the crowd</a><a href="#work">How I work</a><a href="#path">Experience</a><a href="#off">Off the clock</a><a href="#contact">Get in touch</a>
+    </nav>
+  </header>
+
+  <section class="thesis">
+    <p class="eyebrow">What I believe</p>
+    <blockquote>People are the <em>best</em> and the <em>worst</em> part of this job.</blockquote>
+    <p class="soft">They come up with brilliant solutions and create plenty of problems along the way. Everyone carries a whole world around in their head and assumes the rest of us can see it. A lot of what I do is help people see each other's worlds a bit more clearly.</p>
+  </section>
+
+  <section class="crowd" id="crowd" aria-labelledby="crowd-title">
+    <div class="head">
+      <p class="eyebrow">Every chart is a crowd</p>
+      <h2 id="crowd-title">Here are 100 users. <em>Pick one.</em></h2>
+      <p class="soft">Dashboards are great at turning people into percentages. I like turning them back into people. Tap any dot to meet someone.</p>
+    </div>
+    <div class="crowd-body">
+      <div class="dots" id="dots" role="group" aria-label="One hundred research participants"></div>
+      <div class="reveal" aria-live="polite">
+        <span class="who" id="who">Respondent #27</span>
+        <p class="story" id="story">Told us they read the terms and conditions. They did not. We love them anyway.</p>
+        <span class="tally" id="tally">You've met <strong>1</strong> of 20 different people. Keep going.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="head">
+      <p class="eyebrow">How I work</p>
+      <h2>Curious, committed, and <em>a bit of fun.</em></h2>
+    </div>
+    <div class="principles">
+      <div>
+        <span class="chip" style="background:var(--p-blue)"></span>
+        <h3>Generative research is my favourite</h3>
+        <p>I love getting underneath the statistics and assumptions to find the behaviours and attitudes that actually explain them. Honestly, I find it quite poetic.</p>
+      </div>
+      <div>
+        <span class="chip" style="background:var(--p-sage)"></span>
+        <h3>Asking better questions</h3>
+        <p>A lot of my job happens before any research starts. I help stakeholders work out what they really need to know, and I'm always up for a good conversation about ideas and strategy.</p>
+      </div>
+      <div>
+        <span class="chip" style="background:var(--p-butter)"></span>
+        <h3>Bringing users into the room</h3>
+        <p>Whatever we're discussing, I make sure the people we're designing for are part of the conversation, even when they can't be there themselves.</p>
+      </div>
+      <div>
+        <span class="chip" style="background:var(--p-peach)"></span>
+        <h3>Making it enjoyable</h3>
+        <p>Interviews, playbacks, workshops: I try to make all of them fun, because people learn more when they're having a good time. I joke a lot, and I take the work very seriously. Those two things get along fine.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="path">
+    <div class="head">
+      <p class="eyebrow">Experience</p>
+      <h2>Mostly money, <em>always people.</em></h2>
+    </div>
+    <ol class="path">
+      <li><span class="org">Lloyds Banking Group<span class="role">Senior Design Researcher</span></span><span class="when">Now</span></li>
+      <li><span class="org">PensionBee</span><span class="when">Previously</span></li>
+      <li><span class="org">Clara Technologies</span><span class="when">Previously</span></li>
+    </ol>
+    <div class="study">
+      <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/><path d="M22 9v6"/></svg></span>
+      <div>
+        <p class="eyebrow">Currently studying</p>
+        <h3>Master's degree at HEC Paris</h3>
+        <p class="soft">In the final stretch, alongside a full-time job and a two-year-old. Coffee has been very supportive.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="off">
+    <div class="head">
+      <p class="eyebrow">Off the clock</p>
+      <h2>Me, <em>in charts.</em></h2>
+      <p class="soft">I am a researcher, after all.</p>
+    </div>
+    <div class="info">
+      <div class="tile t-sage span3">
+        <span class="k">Origins</span>
+        <div class="venn" role="img" aria-label="Born and raised in Brazil, with Italian family on both sides, which makes me Italo-Brazilian">
+          <span class="br">Born &amp; raised in Brazil</span>
+          <span class="it">Italian family, both sides</span>
+          <span class="me">me</span>
+        </div>
+        <p class="note">Italo-Brazilian. Expect hand gestures and strong opinions about food.</p>
+      </div>
+
+      <div class="tile t-butter span3">
+        <span class="k">Mood when handed a good puzzle</span>
+        <div class="clouds" role="img" aria-label="Nine out of nine clouds: cloud nine">
+          <svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg><svg class="on" viewBox="0 0 34 24"><path d="M9 21h17a6 6 0 0 0 .8-11.9A8 8 0 0 0 11.5 8 6.5 6.5 0 0 0 9 21z"/></svg>
+        </div>
+        <p class="big">Cloud nine, every time.</p>
+        <p class="note">Puzzle games are the one hobby that has survived toddlerhood.</p>
+      </div>
+
+      <div class="tile t-plain span6">
+        <span class="k">Where my week goes, roughly</span>
+        <div class="week" role="img" aria-label="A rough split of my week: full-time job, toddler, master's degree, sleep, and a tiny sliver for hobbies">
+          <span style="width:36%;background:var(--p-blue)"></span><span style="width:30%;background:var(--p-peach)"></span><span style="width:16%;background:var(--p-lilac)"></span><span style="width:16%;background:var(--p-sage)"></span><span style="width:2%;background:var(--p-butter)"></span>
+        </div>
+        <ul class="legend">
+          <li><i style="background:var(--p-blue)"></i>Full-time job</li>
+          <li><i style="background:var(--p-peach)"></i>My two-year-old daughter</li>
+          <li><i style="background:var(--p-lilac)"></i>Master's at HEC Paris</li>
+          <li><i style="background:var(--p-sage)"></i>Sleep (generously rounded up)</li>
+          <li><i style="background:var(--p-butter)"></i>Hobbies</li>
+        </ul>
+      </div>
+
+      <div class="tile t-blue span3">
+        <span class="k">How long I'll talk if you let me</span>
+        <div class="bars">
+          <div class="bar off"><span>Taylor Swift</span><div class="track"><div class="fill"></div></div></div>
+          <div class="bar"><span>Child development</span><div class="track"><div class="fill" style="width:82%"></div></div></div>
+          <div class="bar"><span>Films and series</span><div class="track"><div class="fill" style="width:76%"></div></div></div>
+          <div class="bar"><span>Cooking</span><div class="track"><div class="fill" style="width:70%"></div></div></div>
+        </div>
+      </div>
+
+      <div class="tile t-peach span3">
+        <span class="k">On permanent rewatch</span>
+        <div class="shows">
+          <div><b>BoJack Horseman</b><small>2014–2020</small></div>
+          <div><b>Gilmore Girls</b><small>2000–2007</small></div>
+          <div><b>Gone with the Wind</b><small>1939</small></div>
+          <div><b>Little Miss Sunshine</b><small>2006</small></div>
+        </div>
+        <p class="note">Funny, sad, and about people who are a bit of a mess. You may notice a theme.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="head">
+      <p class="eyebrow">Get in touch</p>
+      <h2>Let's <em>talk.</em></h2>
+      <p class="soft">If you're hiring, looking for a mentor, or need a speaker who'll keep the room awake, I'd love to hear from you.</p>
+    </div>
+    <div class="ways">
+      <div class="email"><code id="mail">giovannacferreira@icloud.com</code><button class="btn solid" id="copy" type="button">Copy email</button></div>
+      <a class="btn ghost" href="https://www.linkedin.com/in/giovanna-ferreira-5b27a756/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>Giovanna "Gio" Ferreira. Thanks for stopping by.</footer>
+</main>
+
+<script>
+(function () {
+  const stories = [
+    "Told us they read the terms and conditions. They did not. We love them anyway.",
+    "Abandoned the form at step 3. Not a UX problem: their toddler found the off switch.",
+    "Clicked 'Forgot password' four times. Remembered it on the fifth. Did not trust the feeling.",
+    "Thought APR was a month. Not wrong, just early.",
+    "Opened the banking app at 2:14am to check their balance. It was still there. Smaller.",
+    "Calls every chatbot 'mate'. Gets annoyed when it calls them 'mate' back.",
+    "Is saving for their pension 'later'. Later keeps moving.",
+    "Has strong opinions about the button's colour. Has not read the button.",
+    "Gave a 10 on the satisfaction survey so it would go away.",
+    "Pressed back. Lost everything. Has made peace with it. Has not made peace with you.",
+    "Their mum does their online banking. Their mum is 82 and better at it.",
+    "Behaved exactly like the persona predicted. Once. Never again.",
+    "Took the survey in the bath. Dropped the phone. Logged as a drop-off.",
+    "Thinks 'Are you sure?' is a personal question. Honestly, fair.",
+    "Is the 0.3% the dashboard calls an outlier. Has a whole life, a cat and a grudge.",
+    "Didn't scroll below the fold because lunch was ready. Priorities.",
+    "Screenshots every confirmation page. Has 4,000 of them. Has never needed one.",
+    "Skipped the onboarding tour, then asked where everything was.",
+    "Uses the 'contact us' form to write poetry. It's not bad.",
+    "Said 'I'd definitely use that'. Has not used that."
+  ];
+  const finale = "They contradicted each other, surprised you and broke at least one assumption. Welcome to research.";
+  const pastels = ['--p-blue', '--p-sage', '--p-butter', '--p-lilac', '--p-peach'];
+
+  let seed = 1983;
+  const rand = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const map = Array.from({ length: 100 }, (_, i) => i % stories.length);
+  for (let i = map.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [map[i], map[j]] = [map[j], map[i]]; }
+  const tcs = map.indexOf(0); [map[26], map[tcs]] = [map[tcs], map[26]];
+
+  const dotsEl = document.getElementById('dots');
+  const who = document.getElementById('who');
+  const story = document.getElementById('story');
+  const tally = document.getElementById('tally');
+  const met = new Set([0]);
+  let current = null;
+
+  function show(i, btn) {
+    if (current) current.classList.remove('current');
+    current = btn; btn.classList.add('current', 'met');
+    const s = map[i]; met.add(s);
+    who.textContent = 'Respondent #' + (i + 1);
+    story.textContent = stories[s];
+    story.classList.remove('fresh'); void story.offsetWidth; story.classList.add('fresh');
+    tally.innerHTML = met.size === stories.length
+      ? '<strong>You\'ve met all 20.</strong> ' + finale
+      : "You've met <strong>" + met.size + "</strong> of 20 different people." + (met.size > 10 ? ' Nearly there.' : ' Keep going.');
+  }
+
+  for (let i = 0; i < 100; i++) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.id = 'p' + (i + 1);
+    b.style.background = 'var(' + pastels[Math.floor(rand() * pastels.length)] + ')';
+    b.setAttribute('aria-label', 'Respondent ' + (i + 1));
+    b.addEventListener('click', () => show(i, b));
+    if (i === 26) { b.classList.add('met', 'current'); current = b; }
+    dotsEl.appendChild(b);
+  }
+
+  const copy = document.getElementById('copy');
+  const mail = document.getElementById('mail');
+  copy.addEventListener('click', () => {
+    const done = () => { copy.textContent = 'Copied'; setTimeout(() => copy.textContent = 'Copy email', 1800); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(mail); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = 'Selected, press copy'; setTimeout(() => copy.textContent = 'Copy email', 2400); };
+    try { navigator.clipboard.writeText(mail.textContent).then(done, fallback); } catch (e) { fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
