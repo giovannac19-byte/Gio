@@ -124,11 +124,14 @@
   .reveal .story { font-family: var(--font-display); font-size: clamp(1.4rem, 3.4vw, 1.75rem); line-height: 1.3; }
   .reveal .story.fresh { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
   .reveal .stat { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; font-size: .95rem; }
-  .reveal .count { font-weight: 600; }
+  .reveal .count { font-weight: 500; }
+  .reveal .src { font-size: .78rem; color: var(--ink-soft); }
+  .reveal .src a { color: var(--ink-soft); }
   .reveal .count span { color: var(--accent); }
   .reveal .method { color: var(--ink-soft); }
   .reveal .method b { color: var(--ink); font-weight: 600; }
-  .dots button.same { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--accent); }
+  .dots button.same { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--accent); }
+  .dots button.current { box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent); }
   .tally { font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
   .tally strong { color: var(--ink); font-weight: 600; }
 
@@ -307,18 +310,19 @@
     <div class="head">
       <p class="eyebrow">Every chart is a crowd</p>
       <h2 id="crowd-title">Here are 100 users. <em>Pick one.</em></h2>
-      <p class="soft">Dashboards are great at turning people into percentages. I like turning them back into people. Each dot is one person. Tap one to see what they did, how many people in this crowd did the same thing, and the research method I'd use to find out why.</p>
+      <p class="soft">Dashboards are great at turning people into percentages. I like turning them back into people. Each dot is one person. Tap one to meet them, see how common that behaviour really is in the UK (the ringed dots show the real share out of 100), and the research method I'd use to understand why.</p>
     </div>
     <div class="crowd-body">
       <div class="dots" id="dots" role="group" aria-label="One hundred research participants"></div>
       <div class="reveal" aria-live="polite">
-        <span class="who" id="who">Respondent #27</span>
+        <span class="who" id="who">Participant #27</span>
         <p class="story" id="story">Told us they read the terms and conditions. They did not. We love them anyway.</p>
         <div class="stat">
-          <span class="count" id="count"><span>14 of these 100 people</span> did this.</span>
+          <span class="count" id="count"><span>35%</span> of UK adults accept terms and conditions anyway, even though 39% worry about being caught out by the small print.</span>
+          <span class="src" id="src">Source: <a href="https://www.ispreview.co.uk/index.php/2023/09/giffgaff-survey-finds-half-of-brits-unlikely-to-read-tcs.html" target="_blank" rel="noopener">giffgaff and Atomik Research, 2023</a></span>
           <span class="method" id="method"><b>How I'd explore it: usability testing.</b> Watching what people actually do, rather than what they tell us they do.</span>
         </div>
-        <span class="tally" id="tally">You've met <strong>1</strong> of 20 different people. Keep going.</span>
+        <span class="tally" id="tally">You've met <strong>1</strong> of 11 different people. Keep going.</span>
       </div>
     </div>
   </section>
@@ -488,37 +492,63 @@
 
 <script>
 (function () {
-  // text, how many of the 100 did it, method, why that method
+  // [story, real UK share out of 100, stat sentence, source label, source url, method, why]
   const stories = [
-    ["Told us they read the terms and conditions. They did not. We love them anyway.", 14, "usability testing", "Watching what people actually do, rather than what they tell us they do."],
-    ["Abandoned the form at step 3. Not a UX problem: their toddler found the off switch.", 6, "a diary study", "Real life happens around our products, and diaries capture it as it happens."],
-    ["Clicked 'Forgot password' four times. Remembered it on the fifth. Did not trust the feeling.", 9, "usability testing", "Seeing exactly where confidence drops and people start second-guessing themselves."],
-    ["Thought APR was a month. Not wrong, just early.", 7, "user interviews", "Finding out how people really understand the language we take for granted."],
-    ["Opened the banking app at 2:14am to check their balance. It was still there. Smaller.", 5, "a diary study", "Late-night money worries don't show up in a lab. They show up in diaries."],
-    ["Calls every chatbot 'mate'. Gets annoyed when it calls them 'mate' back.", 4, "user interviews with real chat transcripts", "Talking through real conversations shows how tone lands, for better or worse."],
-    ["Is saving for their pension 'later'. Later keeps moving.", 8, "in-depth interviews", "Getting underneath the attitudes and feelings that keep pushing big decisions back."],
-    ["Has strong opinions about the button's colour. Has not read the button.", 3, "usability testing", "Separating what people say they like from what actually helps them get things done."],
-    ["Gave a 10 on the satisfaction survey so it would go away.", 6, "follow-up interviews", "Scores tell you what. A conversation tells you whether the score means anything."],
-    ["Pressed back. Lost everything. Has made peace with it. Has not made peace with you.", 5, "usability testing", "Moments of loss and frustration are easy to spot once you watch someone try."],
-    ["Their mum does their online banking. Their mum is 82 and better at it.", 2, "an ethnographic study", "Spending time with households shows who really does what, and why."],
-    ["Behaved exactly like the persona predicted. Once. Never again.", 3, "archetypes built from behaviour", "Grouping people by what they do and need, rather than by age or income, holds up better."],
-    ["Took the survey in the bath. Dropped the phone. Logged as a drop-off.", 2, "contextual inquiry", "Knowing where and how people take part changes how you read the data."],
-    ["Thinks 'Are you sure?' is a personal question. Honestly, fair.", 3, "usability testing of the wording", "Small words carry a lot of weight, and testing them shows how they feel to read."],
-    ["Is the outlier the dashboard quietly rounds away. Has a whole life, a cat and a grudge.", 1, "an in-depth interview", "Outliers are often early signals. One good conversation can explain a lot."],
-    ["Didn't scroll below the fold because lunch was ready. Priorities.", 5, "contextual inquiry", "Observing people in their own environment shows what actually competes for their attention."],
-    ["Screenshots every confirmation page. Has 4,000 of them. Has never needed one.", 2, "an ethnographic study", "Habits like this point to trust, and trust is easiest to understand up close."],
-    ["Skipped the onboarding tour, then asked where everything was.", 6, "usability testing", "Watching first-time use shows what people need, and when they actually need it."],
-    ["Uses the 'contact us' form to write poetry. It's not bad.", 1, "a focus group", "Sometimes people just want to be heard, and a group conversation brings that out."],
-    ["Said 'I'd definitely use that'. Has not used that.", 8, "concept testing with follow-up", "Comparing what people say they'll do with what they later do keeps everyone honest."]
+    ["Told us they read the terms and conditions. They did not. We love them anyway.", 35,
+     "of UK adults accept terms and conditions anyway, even though 39% worry about being caught out by the small print.",
+     "giffgaff and Atomik Research, 2023", "https://www.ispreview.co.uk/index.php/2023/09/giffgaff-survey-finds-half-of-brits-unlikely-to-read-tcs.html",
+     "usability testing", "Watching what people actually do, rather than what they tell us they do."],
+    ["Clicked 'Forgot password' four times. Remembered it on the fifth. Did not trust the feeling.", 38,
+     "of UK workers have accounts they can no longer get into because they forgot the password.",
+     "Centrify via Silicon UK, 2014", "https://silicon.co.uk/workspace/forgetting-passwords-annoying-habit-brits-153595",
+     "usability testing", "Seeing exactly where confidence drops and people start second-guessing themselves."],
+    ["Thought APR was a month. Not wrong, just early.", 62,
+     "of Brits don't know what APR means.",
+     "Confused.com via IFA Magazine, 2023", "https://ifamagazine.com/new-study-reveals-the-state-of-mortgage-literacy-in-the-uk-4-in-5-brits-dont-know-what-an-apr-is/",
+     "user interviews", "Finding out how people really understand the language we take for granted."],
+    ["Opened the banking app at 2:14am to check their balance. It was still there. Smaller.", 88,
+     "of Brits say money worries affect their sleep. 12% lie awake over it every single night.",
+     "Virgin Money, 2023", "https://www.virginmoneyukplc.com/newsroom/article/money-worries-sleepless-nights/",
+     "a diary study", "Late-night money worries don't show up in a lab. They show up in diaries."],
+    ["Calls every chatbot 'mate'. Gets annoyed when it calls them 'mate' back.", 83,
+     "of UK customers would rather speak to a real person. Only 4% prefer a chatbot.",
+     "8x8, 2025", "https://www.businesswire.com/news/home/20251016324153/en/Report-UK-Customers-Still-Prefer-Human-Support-Over-AI",
+     "user interviews with real chat transcripts", "Talking through real conversations shows how tone lands, for better or worse."],
+    ["Is saving for their pension 'later'. Later keeps moving.", 39,
+     "of UK adults aren't on track for even a minimum lifestyle in retirement.",
+     "Scottish Widows Retirement Report via Employee Benefits, 2025", "https://employeebenefits.co.uk/pensions/39-are-not-on-track-for-a-minimum-lifestyle-in-retirement/280719.article",
+     "in-depth interviews", "Getting underneath the attitudes and feelings that keep pushing big decisions back."],
+    ["Got to the last step of checkout. It crashed. Has made peace with it. Has not made peace with you.", 70,
+     "of online baskets are abandoned before purchase. 17% of people who abandon say the site had errors or crashed.",
+     "Baymard Institute, 2025", "https://baymard.com/lists/cart-abandonment-rate",
+     "usability testing", "Moments of loss and frustration are easy to spot once you watch someone try."],
+    ["Their mum is 82 and does all her banking online. She's better at it than they are.", 61,
+     "of over-65s with a bank account manage their money online. The other 39% don't, and deserve options too.",
+     "Age UK and Ipsos, 2023", "https://www.ageuk.org.uk/latest-press/articles/2023/as-bank-branches-continue-to-close-a-new-age-uk-report-reveals-that-4-in-10-over-65s-with-a-bank-account-do-not-manage-their-money-online/",
+     "an ethnographic study", "Spending time with households shows who really does what, and why."],
+    ["Did the survey with the telly on. Answered 'strongly agree' to everything, including the trick question.", 12,
+     "of online survey participants fail a simple attention check. Plan for about 1 in 10.",
+     "MeasuringU", "https://measuringu.com/cheat-survey/",
+     "mixed methods", "Pairing a survey with interviews shows which answers you can trust."],
+    ["Didn't scroll below the fold because lunch was ready. Priorities.", 57,
+     "of the time people spend on a web page goes on what's visible before they scroll.",
+     "Nielsen Norman Group, 2018", "https://www.nngroup.com/articles/scrolling-and-attention/",
+     "contextual inquiry", "Observing people in their own environment shows what actually competes for their attention."],
+    ["Skipped the onboarding tour, then asked where everything was.", 23,
+     "of people open a new app once and never come back.",
+     "Localytics via TechCrunch, 2016", "https://techcrunch.com/2016/05/31/nearly-1-in-4-people-abandon-mobile-apps-after-only-one-use/",
+     "usability testing", "Watching first-time use shows what people need, and when they actually need it."]
   ];
   const finale = "They contradicted each other, surprised you and broke at least one assumption. Welcome to research.";
   const pastels = ['--p-blue', '--p-sage', '--p-butter', '--p-lilac', '--p-peach'];
 
   let seed = 1983;
   const rand = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-  const map = [];
-  stories.forEach((st, k) => { for (let n = 0; n < st[1]; n++) map.push(k); });
+  const map = Array.from({ length: 100 }, (_, i) => i % stories.length);
   for (let i = map.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [map[i], map[j]] = [map[j], map[i]]; }
+  // A fixed scattered order for ringing "N out of 100"
+  const ringOrder = Array.from({ length: 100 }, (_, i) => i);
+  for (let i = 99; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [ringOrder[i], ringOrder[j]] = [ringOrder[j], ringOrder[i]]; }
   const tcs = map.indexOf(0); [map[26], map[tcs]] = [map[tcs], map[26]];
 
   const dotsEl = document.getElementById('dots');
@@ -527,31 +557,37 @@
   const tally = document.getElementById('tally');
   const countEl = document.getElementById('count');
   const methodEl = document.getElementById('method');
+  const srcEl = document.getElementById('src');
   const buttons = [];
   const met = new Set([0]);
   let current = null;
+
+  function ring(pct) {
+    const on = new Set(ringOrder.slice(0, pct));
+    buttons.forEach((bt, k) => bt.classList.toggle('same', on.has(k)));
+  }
 
   function show(i, btn) {
     if (current) current.classList.remove('current');
     current = btn; btn.classList.add('current', 'met');
     const s = map[i]; met.add(s);
-    who.textContent = 'Respondent #' + (i + 1);
-    const [text, n, method, why] = stories[s];
+    who.textContent = 'Participant #' + (i + 1);
+    const [text, pct, stat, srcLabel, srcUrl, method, why] = stories[s];
     story.textContent = text;
-    countEl.innerHTML = '<span>' + (n === 1 ? 'Just 1 of these 100 people' : n + ' of these 100 people') + '</span> ' + (n === 1 ? 'did this.' : 'did this.');
+    countEl.innerHTML = '<span>' + pct + '%</span> ' + stat;
+    srcEl.innerHTML = 'Source: <a href="' + srcUrl + '" target="_blank" rel="noopener">' + srcLabel + '</a>';
     methodEl.innerHTML = '<b>How I\'d explore it: ' + method + '.</b> ' + why;
-    buttons.forEach((bt, k) => bt.classList.toggle('same', map[k] === s && bt !== btn));
-    story.classList.remove('fresh'); void story.offsetWidth; story.classList.add('fresh');
+    ring(pct);
     tally.innerHTML = met.size === stories.length
-      ? '<strong>You\'ve met all 20.</strong> ' + finale
-      : "You've met <strong>" + met.size + "</strong> of 20 different people." + (met.size > 10 ? ' Nearly there.' : ' Keep going.');
+      ? '<strong>You\'ve met all 11.</strong> ' + finale
+      : "You've met <strong>" + met.size + "</strong> of 11 different people." + (met.size > 7 ? ' Nearly there.' : ' Keep going.');
   }
 
   for (let i = 0; i < 100; i++) {
     const b = document.createElement('button');
     b.type = 'button'; b.id = 'p' + (i + 1);
     b.style.background = 'var(' + pastels[Math.floor(rand() * pastels.length)] + ')';
-    b.setAttribute('aria-label', 'Respondent ' + (i + 1));
+    b.setAttribute('aria-label', 'Participant ' + (i + 1));
     b.addEventListener('click', () => show(i, b));
     if (i === 26) { b.classList.add('met', 'current'); current = b; }
     dotsEl.appendChild(b); buttons.push(b);
@@ -575,6 +611,8 @@
     // Safety net: never leave anything hidden
     setTimeout(() => targets.forEach(el => { if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }), 1500);
   }
+
+  ring(stories[0][1]);
 
   const copy = document.getElementById('copy');
   const mail = document.getElementById('mail');
