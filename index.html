@@ -59,13 +59,13 @@
   }
   /* Lava lamp: soft pastel blobs that rise, sink and change shape */
   .lava { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; filter: blur(46px); }
-  .blob { position: absolute; opacity: .9; border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; animation: morph 16s ease-in-out infinite alternate, rise var(--t) ease-in-out infinite alternate; }
+  .blob { position: absolute; opacity: .9; border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; animation: morph 16s ease-in-out infinite alternate, float var(--t) ease-in-out infinite alternate; }
   .b1 { --t: 26s; width: 38vmax; height: 38vmax; left: -8vmax; top: 55vh; background: var(--glow-1); }
   .b2 { --t: 32s; width: 30vmax; height: 34vmax; right: -6vmax; top: 70vh; background: var(--glow-2); animation-delay: -6s, -12s; }
   .b3 { --t: 22s; width: 22vmax; height: 24vmax; left: 38%; top: 80vh; background: var(--glow-3); animation-delay: -3s, -4s; }
   .b4 { --t: 36s; width: 26vmax; height: 24vmax; left: 12%; top: 90vh; background: var(--p-lilac); animation-delay: -9s, -20s; }
   .b5 { --t: 29s; width: 20vmax; height: 22vmax; right: 18%; top: 60vh; background: var(--p-peach); opacity: .7; animation-delay: -12s, -8s; }
-  @keyframes rise { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-85vh) rotate(40deg); } }
+  @keyframes float { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-85vh) rotate(40deg); } }
   @keyframes morph {
     0%   { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; }
     50%  { border-radius: 63% 37% 38% 62% / 58% 63% 37% 42%; }
@@ -192,17 +192,48 @@
   .load.d2 { animation-delay: .12s; } .load.d3 { animation-delay: .24s; } .load.d4 { animation-delay: .36s; }
   @keyframes rise { from { transform: translateY(10px); opacity: .001; } to { transform: none; opacity: 1; } }
 
+  /* Scroll reveal: only hides things once the script confirms it can show them again */
+  .sr-ready .sr { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+  .sr-ready .sr.in { opacity: 1; transform: none; }
+  .bar .fill, .week span { transition: width 1.2s cubic-bezier(.2,.7,.2,1) .3s; }
+  .sr-ready .tile.sr:not(.in) .fill, .sr-ready .tile.sr:not(.in) .week span { width: 0 !important; }
+  .clouds .on { transition: opacity .4s ease, transform .4s ease; }
+  .sr-ready .tile.sr:not(.in) .clouds .on { opacity: 0; transform: scale(.6); }
+
+  /* Tablet */
+  @media (max-width: 900px) {
+    .principles { gap: 48px 40px; }
+  }
+  /* Phone */
   @media (max-width: 700px) {
+    body { font-size: 1rem; }
     .crowd-body, .principles { grid-template-columns: minmax(0, 1fr); }
-    .principles { gap: 44px; }
+    .principles { gap: 40px; }
     .span3 { grid-column: span 6; }
-    .dots { max-width: 300px; margin: 0 auto; }
-    .reveal { min-height: 10em; }
-    .study { grid-template-columns: minmax(0, 1fr); }
+    .info { gap: 14px; }
+    .dots { max-width: 320px; margin: 0 auto; }
+    .reveal { min-height: 10em; text-align: center; align-items: center; }
+    .study { grid-template-columns: minmax(0, 1fr); margin-top: 48px; }
+    .head { margin-bottom: 28px; }
+    .hero nav { gap: 8px; letter-spacing: .04em; }
+    .hero nav a { border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; background: var(--surface); }
+    .path li { padding-block: 20px; }
+    .path .org { font-size: 1.35rem; }
+    footer { margin-top: -24px; }
+  }
+  /* Small phone */
+  @media (max-width: 440px) {
+    .crowd { border-radius: 22px; padding: 24px 18px; }
+    .shows { grid-template-columns: minmax(0, 1fr); }
+    .ways { flex-direction: column; align-items: stretch; }
+    .email { border-radius: 18px; padding: 16px; flex-direction: column; align-items: stretch; text-align: center; }
+    .ways .btn { text-align: center; }
+    .venn { margin: 0 auto; }
+    .clouds svg { width: 28px; height: 20px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .blob, .load, .reveal .story.fresh { animation: none; }
-    .dots button { transition: none; }
+    .dots button, .sr-ready .sr, .bar .fill, .week span, .clouds .on { transition: none; }
   }
 </style>
 
@@ -431,6 +462,25 @@
     b.addEventListener('click', () => show(i, b));
     if (i === 26) { b.classList.add('met', 'current'); current = b; }
     dotsEl.appendChild(b);
+  }
+
+  // Reveal sections as people scroll
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduce) {
+    const groups = ['.thesis > *', 'section .head', '.crowd-body', '.principles > div', '.path li', '.study', '.info .tile', '.ways', 'footer'];
+    const targets = [];
+    groups.forEach(sel => document.querySelectorAll(sel).forEach((el, i) => {
+      el.classList.add('sr');
+      if (/principles|path|tile|thesis/.test(sel)) el.style.setProperty('--d', (i % 4) * 0.1 + 's');
+      targets.push(el);
+    }));
+    document.documentElement.classList.add('sr-ready');
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(el => io.observe(el));
+    // Safety net: never leave anything hidden
+    setTimeout(() => targets.forEach(el => { if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }), 1500);
   }
 
   const copy = document.getElementById('copy');
